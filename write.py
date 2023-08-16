@@ -76,7 +76,10 @@ def write():
                       "N_2B_bias_Test?",
                       "N_3B_bias_Test?",
 
-                      "N_2B_correct_NR"
+                      "N_2B_correct_NR_Demo",
+                      "N_3B_correct_NR_Demo",
+                      "N_2B_correct_NR_Test",
+                      "N_3B_correct_NR_Test"
 
                       ]
         csvwriter.writerow(header_row)
