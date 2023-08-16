@@ -44,6 +44,8 @@ def analyzeNBack():
         threeBackOmission = 0
         demoSensitivity = 0
         sensitivity = 0
+        # Defining correct non-response variables
+        twoBackDemoCNR = 0
         # Loop through each csv file until we find the one with the token in the items array
         while not found and i < len(fileNames):
             # Open the CSV file and read the token
@@ -158,6 +160,12 @@ def analyzeNBack():
                                 'C' in str(row[data.columns.get_loc("label")]):
                             threeBackOmission += 1
 
+                        # Calculating 2-back demo correct non-response
+                        if row[data.columns.get_loc("response")] == "timeout" and \
+                                '2' in str(row[data.columns.get_loc("label")]) and \
+                                'p' in str(row[data.columns.get_loc("label")]):
+                            twoBackDemoCNR += 1
+
                     print(twoBackDemoHitRate + twoBackDemoFalseAlarm)
                     """Calculating 2-back demo accuracy. If the participant provided no response during the n-back
                     task, a -1 is placed in the cell"""
@@ -265,6 +273,9 @@ def analyzeNBack():
                     a.append(bias(threeBackHitRate, threeBackDemoFalseAlarm))
                     a.append(bias(twoBackHitRate, twoBackFalseAlarm))
                     a.append(bias(threeBackHitRate, threeBackFalseAlarm))
+
+                    a.append(twoBackDemoCNR)
+
                     found = True
                     fileNames.pop(i)
                 else:
