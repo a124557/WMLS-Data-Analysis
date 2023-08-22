@@ -209,6 +209,7 @@ def analyzeSymmSpan():
                 symmCorrectCountPercentDemo = (symmCorrectCountDemo / symmCountDemo) * 100
                 symmCorrectCount = symmCount - (speedError + processingError)
                 symmCorrectCountPercent = (symmCorrectCount / symmCount) * 100
+
                 # Adding new variables from symmspan file into our items array which contains all output data
                 a.append(browser_value)
 
@@ -249,4 +250,9 @@ def analyzeSymmSpan():
                 a.append(round(recallTime))
 
             else:
+                """Fill array indexes that would normally contain symm-span data with None. Ensures that n-back
+                data is not placed under symm-span headers"""
+                empty_items = 27
+                for _ in range(empty_items):
+                    a.append(None)
                 print("File not found ", token)

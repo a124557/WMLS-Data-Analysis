@@ -137,31 +137,48 @@ def analyzeNBack():
 
                         # Calculating 2-back demo twoBackOmission errors
                         if row[data.columns.get_loc("response")] == "timeout" and \
-                                '2' in str(row[data.columns.get_loc("label")]) and \
-                                'p' in str(row[data.columns.get_loc("label")]) and \
+                                str(row[data.columns.get_loc("label")]).startswith("2p") and \
                                 'C' in str(row[data.columns.get_loc("label")]):
                             twoBackDemoOmission += 1
 
+                        """if row[data.columns.get_loc("response")] == "timeout" and \
+                                '2' in str(row[data.columns.get_loc("label")]) and \
+                                'p' in str(row[data.columns.get_loc("label")]) and \
+                                'C' in str(row[data.columns.get_loc("label")]):
+                            twoBackDemoOmission += 1"""
+
                         # Calculating 3-back demo twoBackOmission errors
                         if row[data.columns.get_loc("response")] == "timeout" and \
+                                str(row[data.columns.get_loc("label")]).startswith("3p") and \
+                                'C' in str(row[data.columns.get_loc("label")]):
+                            threeBackDemoOmission += 1
+                        """if row[data.columns.get_loc("response")] == "timeout" and \
                                 '3' in str(row[data.columns.get_loc("label")]) and \
                                 'p' in str(row[data.columns.get_loc("label")]) and \
                                 'C' in str(row[data.columns.get_loc("label")]):
-                            threeBackDemoOmission += 1
+                            threeBackDemoOmission += 1"""
 
                         # Calculating 2-back test omission errors
                         if row[data.columns.get_loc("response")] == "timeout" and \
+                                str(row[data.columns.get_loc("label")]).startswith("2t") and \
+                                'C' in str(row[data.columns.get_loc("label")]):
+                            twoBackOmission += 1
+                        """if row[data.columns.get_loc("response")] == "timeout" and \
                                 '2' in str(row[data.columns.get_loc("label")]) and \
                                 't' in str(row[data.columns.get_loc("label")]) and \
                                 'C' in str(row[data.columns.get_loc("label")]):
-                            twoBackOmission += 1
+                            twoBackOmission += 1"""
 
                         # Calculating 3-back test omission errors
                         if row[data.columns.get_loc("response")] == "timeout" and \
+                                str(row[data.columns.get_loc("label")]).startswith("3t") and \
+                                'C' in str(row[data.columns.get_loc("label")]):
+                            threeBackOmission += 1
+                        """if row[data.columns.get_loc("response")] == "timeout" and \
                                 '3' in str(row[data.columns.get_loc("label")]) and \
                                 't' in str(row[data.columns.get_loc("label")]) and \
                                 'C' in str(row[data.columns.get_loc("label")]):
-                            threeBackOmission += 1
+                            threeBackOmission += 1"""
 
                         # Calculating 2-back demo correct non-response
                         if row[data.columns.get_loc("response")] == "timeout" and \
