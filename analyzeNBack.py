@@ -78,62 +78,99 @@ def analyzeNBack():
                         """Calculating demo hit rate for 2-back (correct answers will have a '1' in the correct cell
                             and a 'C' in their label"""
                         if row[data.columns.get_loc("correct")] == 1 and \
-                                '2' in str(row[data.columns.get_loc("label")]) and \
-                                'p' in str(row[data.columns.get_loc("label")]) and \
+                                str(row[data.columns.get_loc("label")]).startswith("2p") and \
                                 'C' in str(row[data.columns.get_loc("label")]):
                             twoBackDemoHitRate += 1
+
+                        """if row[data.columns.get_loc("correct")] == 1 and \
+                                '2' in str(row[data.columns.get_loc("label")]) and \
+                                'p' in str(row[data.columns.get_loc("label")]) and \
+                                'C' in str(row[data.columns.get_loc("label")]):"""
 
                         """Calculating demo hit rate for 3-back (correct answers will have a '1' in the correct cell
                             and a 'C' in their label"""
                         if row[data.columns.get_loc("correct")] == 1 and \
-                                '3' in str(row[data.columns.get_loc("label")]) and \
-                                'p' in str(row[data.columns.get_loc("label")]) and \
+                                str(row[data.columns.get_loc("label")]).startswith("3p") and \
                                 'C' in str(row[data.columns.get_loc("label")]):
                             threeBackDemoHitRate += 1
+
+                        """if row[data.columns.get_loc("correct")] == 1 and \
+                                '3' in str(row[data.columns.get_loc("label")]) and \
+                                'p' in str(row[data.columns.get_loc("label")]) and \
+                                'C' in str(row[data.columns.get_loc("label")]):"""
 
                         """Calculating test 2-back hit rate (correct answers will have a '1' in the correct cell
                             and a 'C' in their label"""
                         if row[data.columns.get_loc("correct")] == 1 and \
-                                '2' in str(row[data.columns.get_loc("label")]) and \
-                                't' in str(row[data.columns.get_loc("label")]) and \
+                                str(row[data.columns.get_loc("label")]).startswith("2t") and \
                                 'C' in str(row[data.columns.get_loc("label")]):
                             twoBackHitRate += 1
+
+                        """if row[data.columns.get_loc("correct")] == 1 and \
+                                '2' in str(row[data.columns.get_loc("label")]) and \
+                                't' in str(row[data.columns.get_loc("label")]) and \
+                                'C' in str(row[data.columns.get_loc("label")]):"""
 
                         """Calculating test 3-back hit rate (correct answers will have a '1' in the correct cell
                             and a 'C' in their label"""
                         if row[data.columns.get_loc("correct")] == 1 and \
-                                '3' in str(row[data.columns.get_loc("label")]) and \
-                                't' in str(row[data.columns.get_loc("label")]) and \
+                                str(row[data.columns.get_loc("label")]).startswith("3t") and \
                                 'C' in str(row[data.columns.get_loc("label")]):
                             threeBackHitRate += 1
 
+                        """if row[data.columns.get_loc("correct")] == 1 and \
+                                '3' in str(row[data.columns.get_loc("label")]) and \
+                                't' in str(row[data.columns.get_loc("label")]) and \
+                                'C' in str(row[data.columns.get_loc("label")]):"""
+
                         # Calculating false alarm rate for 2-back demo trials
                         if row[data.columns.get_loc("correct")] == 1 and \
-                                '2' in str(row[data.columns.get_loc("label")]) and \
-                                'p' in str(row[data.columns.get_loc("label")]) and \
+                                str(row[data.columns.get_loc("label")]).startswith("2p") and \
                                 'C' not in str(row[data.columns.get_loc("label")]):
                             twoBackDemoFalseAlarm += 1
 
+                        """if row[data.columns.get_loc("correct")] == 1 and \
+                                '2' in str(row[data.columns.get_loc("label")]) and \
+                                'p' in str(row[data.columns.get_loc("label")]) and \
+                                'C' not in str(row[data.columns.get_loc("label")]):"""
+
+
                         # Calculating false alarm rate for 3-back demo trials
                         if row[data.columns.get_loc("correct")] == 1 and \
-                                '3' in str(row[data.columns.get_loc("label")]) and \
-                                'p' in str(row[data.columns.get_loc("label")]) and \
+                                str(row[data.columns.get_loc("label")]).startswith("3p") and \
                                 'C' not in str(row[data.columns.get_loc("label")]):
                             threeBackDemoFalseAlarm += 1
 
+                        """if row[data.columns.get_loc("correct")] == 1 and \
+                                '3' in str(row[data.columns.get_loc("label")]) and \
+                                'p' in str(row[data.columns.get_loc("label")]) and \
+                                'C' not in str(row[data.columns.get_loc("label")]):"""
+
+
                         # Calculating false alarm rate for 2-back test trials
                         if row[data.columns.get_loc("correct")] == 1 and \
-                                '2' in str(row[data.columns.get_loc("label")]) and \
-                                't' in str(row[data.columns.get_loc("label")]) and \
+                                str(row[data.columns.get_loc("label")]).startswith("2t") and \
                                 'C' not in str(row[data.columns.get_loc("label")]):
                             twoBackFalseAlarm += 1
 
+                        """if row[data.columns.get_loc("correct")] == 1 and \
+                                '2' in str(row[data.columns.get_loc("label")]) and \
+                                't' in str(row[data.columns.get_loc("label")]) and \
+                                'C' not in str(row[data.columns.get_loc("label")]):"""
+
+
                         # Calculating false alarm rate for 3-back test trials
                         if row[data.columns.get_loc("correct")] == 1 and \
-                                '3' in str(row[data.columns.get_loc("label")]) and \
-                                't' in str(row[data.columns.get_loc("label")]) and \
+                                str(row[data.columns.get_loc("label")]).startswith("3t") and \
                                 'C' not in str(row[data.columns.get_loc("label")]):
                             threeBackFalseAlarm += 1
+
+                        """if row[data.columns.get_loc("correct")] == 1 and \
+                                '3' in str(row[data.columns.get_loc("label")]) and \
+                                't' in str(row[data.columns.get_loc("label")]) and \
+                                'C' not in str(row[data.columns.get_loc("label")]):"""
+
+
 
                         # Calculating 2-back demo twoBackOmission errors
                         if row[data.columns.get_loc("response")] == "timeout" and \
@@ -141,68 +178,45 @@ def analyzeNBack():
                                 'C' in str(row[data.columns.get_loc("label")]):
                             twoBackDemoOmission += 1
 
-                        """if row[data.columns.get_loc("response")] == "timeout" and \
-                                '2' in str(row[data.columns.get_loc("label")]) and \
-                                'p' in str(row[data.columns.get_loc("label")]) and \
-                                'C' in str(row[data.columns.get_loc("label")]):
-                            twoBackDemoOmission += 1"""
-
                         # Calculating 3-back demo twoBackOmission errors
                         if row[data.columns.get_loc("response")] == "timeout" and \
                                 str(row[data.columns.get_loc("label")]).startswith("3p") and \
                                 'C' in str(row[data.columns.get_loc("label")]):
                             threeBackDemoOmission += 1
-                        """if row[data.columns.get_loc("response")] == "timeout" and \
-                                '3' in str(row[data.columns.get_loc("label")]) and \
-                                'p' in str(row[data.columns.get_loc("label")]) and \
-                                'C' in str(row[data.columns.get_loc("label")]):
-                            threeBackDemoOmission += 1"""
 
                         # Calculating 2-back test omission errors
                         if row[data.columns.get_loc("response")] == "timeout" and \
                                 str(row[data.columns.get_loc("label")]).startswith("2t") and \
                                 'C' in str(row[data.columns.get_loc("label")]):
                             twoBackOmission += 1
-                        """if row[data.columns.get_loc("response")] == "timeout" and \
-                                '2' in str(row[data.columns.get_loc("label")]) and \
-                                't' in str(row[data.columns.get_loc("label")]) and \
-                                'C' in str(row[data.columns.get_loc("label")]):
-                            twoBackOmission += 1"""
 
                         # Calculating 3-back test omission errors
                         if row[data.columns.get_loc("response")] == "timeout" and \
                                 str(row[data.columns.get_loc("label")]).startswith("3t") and \
                                 'C' in str(row[data.columns.get_loc("label")]):
                             threeBackOmission += 1
-                        """if row[data.columns.get_loc("response")] == "timeout" and \
-                                '3' in str(row[data.columns.get_loc("label")]) and \
-                                't' in str(row[data.columns.get_loc("label")]) and \
-                                'C' in str(row[data.columns.get_loc("label")]):
-                            threeBackOmission += 1"""
 
                         # Calculating 2-back demo correct non-response
                         if row[data.columns.get_loc("response")] == "timeout" and \
-                                '2' in str(row[data.columns.get_loc("label")]) and \
-                                'p' in str(row[data.columns.get_loc("label")]):
+                                str(row[data.columns.get_loc("label")]).startswith("2p"):
                             twoBackDemoCNR += 1
 
                         # Calculating 3-back demo correct non-response
                         if row[data.columns.get_loc("response")] == "timeout" and \
-                                '3' in str(row[data.columns.get_loc("label")]) and \
-                                'p' in str(row[data.columns.get_loc("label")]):
+                                str(row[data.columns.get_loc("label")]).startswith("3p"):
                             threeBackDemoCNR += 1
 
                         # Calculating 2-back test correct non-response
                         if row[data.columns.get_loc("response")] == "timeout" and \
-                                '2' in str(row[data.columns.get_loc("label")]) and \
-                                't' in str(row[data.columns.get_loc("label")]):
+                                str(row[data.columns.get_loc("label")]).startswith("2t"):
                             twoBackTestCNR += 1
 
                         # Calculating 3-back test correct non-response
                         if row[data.columns.get_loc("response")] == "timeout" and \
-                                '3' in str(row[data.columns.get_loc("label")]) and \
-                                't' in str(row[data.columns.get_loc("label")]):
+                                str(row[data.columns.get_loc("label")]).startswith("3t"):
                             threeBackTestCNR += 1
+
+                            """ End """
 
                     print(twoBackDemoHitRate + twoBackDemoFalseAlarm)
                     """Calculating 2-back demo accuracy. If the participant provided no response during the n-back
