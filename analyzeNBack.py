@@ -17,11 +17,11 @@ def analyzeNBack():
             data = list(reader)"""
 
     # Getting list of all files in the N-Back data folder
-    files = os.listdir("N-Back")
+    files = os.listdir(config.nBackFolder)
     fileNames = []
     for name in files:
         if name.endswith('.csv'):
-            file_path = os.path.join("N-Back", name)
+            file_path = os.path.join(config.nBackFolder, name)
         fileNames.append(file_path)
 
     for a in config.items:

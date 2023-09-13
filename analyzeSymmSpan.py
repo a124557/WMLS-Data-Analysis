@@ -29,7 +29,7 @@ def analyzeSymmSpan():
             maxDTRtDemo = 0
             maxDTRt = 0
             # We are locating the symm span file with the same token in the current row
-            filename = f"Symm_Span/Symmetry_Span_{token}.csv"
+            filename = f"{config.visualSpanFolder}/Symmetry_Span_{token}.csv"
             if os.path.isfile(filename):
                 data = pd.read_csv(filename)
                 if "browser" in data.columns:
@@ -122,13 +122,15 @@ def analyzeSymmSpan():
                     # Maximum response time on demo distractor tasks
                     try:
                         if row[data.columns.get_loc("trial_type")] in ["symmetry-judgement-task-demo"] or \
-                                row[data.columns.get_loc("trial_type")] in ["symmetry-judgement-task-fulldemo"]:
+                                row[data.columns.get_loc("trial_type")] in ["symmetry-judgement-task-fulldemo"] and \
+                                not math.isnan(row[0]):
                             maxDTRtDemo = max(row[0], maxDTRtDemo)
                     except KeyError:
                         print("Column not found. Skipping")
                     # Maximum response time on test distractor tasks
                     try:
-                        if row[data.columns.get_loc("trial_type")] in ["symmetry-judgement-task"]:
+                        if row[data.columns.get_loc("trial_type")] in ["symmetry-judgement-task"] and \
+                                not math.isnan(row[0]):
                             maxDTRt = max(row[0], maxDTRt)
                     except KeyError:
                         print("Column not found. Skipping")
@@ -200,6 +202,7 @@ def analyzeSymmSpan():
                     incorrectSymmMean = -1
                 else:
                     incorrectSymmMean = round(incorrectSymmRtTotal / incorrectSymmCount)
+
                 correctSymmMean = round(correctSymmTotal / correctSymmCount)
                 # Calculating demo and test partial credit scores
                 partialCredit = spatialTotal / spatialCount
