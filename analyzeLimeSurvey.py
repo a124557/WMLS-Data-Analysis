@@ -1,6 +1,6 @@
 import config
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def analyzeLimeSurvey(filename):
     with open(filename, "r") as csvfile:
@@ -15,12 +15,31 @@ def analyzeLimeSurvey(filename):
                 date = row[1]
                 gender = row[55]
                 age = row[54]
+                ilsDuration = float(row[58]) + float(row[70]) + float(row[82]) + float(row[94])
+                # Convert to minutes and seconds
+                minutes = int(ilsDuration // 60)  # Whole minutes
+                remaining_seconds = int(ilsDuration % 60)  # Remaining seconds as an integer
+                # Create a string in the format "minutes:seconds"
+                ilsDuration = f"{minutes:02}:{remaining_seconds:02}"
+
                 if row[1] and row[5]:
-                    start_time = datetime.strptime(row[5], '%Y-%m-%d %H:%M:%S')
+                    limeStartTime = datetime.strptime(row[5], '%Y-%m-%d %H:%M:%S')
                     submit_time = datetime.strptime(row[1], '%Y-%m-%d %H:%M:%S')
-                    time_taken = submit_time - start_time
+                    time_taken = submit_time - limeStartTime
                 else:
                     time_taken = "Not submitted"
+
+                # Retrieving time participant completed 4 questions group to move on and complete tasks
+
+                # Time duration to add
+                minutes, seconds = map(int, ilsDuration.split(':'))
+                duration = timedelta(minutes=minutes, seconds=seconds)
+
+                # Add the duration to the original time
+                ilsCompleteTime = limeStartTime + duration
+
+                # Format the result as a string
+                ilsCompleteTime = ilsCompleteTime.strftime('%Y-%m-%d %H:%M:%S')
 
                 # Reset scores and set names for each row
                 set_names = []
@@ -70,6 +89,6 @@ def analyzeLimeSurvey(filename):
                     elif row[i + 3] == '2':
                         scores[3] -= 1
 
-                output_row = [date, token, time_taken, gender, age]
+                output_row = [date, limeStartTime, ilsDuration, ilsCompleteTime, token, time_taken, gender, age]
                 output_row.extend(scores)
                 config.items.append(output_row)

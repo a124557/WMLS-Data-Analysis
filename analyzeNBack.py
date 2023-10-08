@@ -5,6 +5,8 @@ import math
 # Using libraries below to parse the Testable URL and quickly retireve the token
 from urllib.parse import urlparse, parse_qs
 import pandas as pd
+import pytz
+from datetime import datetime
 
 
 def analyzeNBack():
@@ -27,8 +29,9 @@ def analyzeNBack():
     for a in config.items:
         i = 0
         # Define the token from our global items list
-        token = a[1]
+        token = a[6]
         found = False
+        symmStart = a[4]
         twoBackDemoHitRate = 0
         threeBackDemoHitRate = 0
         twoBackHitRate = 0
@@ -70,6 +73,43 @@ def analyzeNBack():
                 if csvTokenValue == token:
                     print("File with defined token found!")
                     print("Token is: ", csvTokenValue)
+
+                    # Getting time spent on the n-back task and converting to minutes and seconds
+                    nBackDuration = float(data_row[8])
+                    minutes = int(nBackDuration // 60)  # Whole minutes
+                    remaining_seconds = int(nBackDuration % 60)  # Remaining seconds as an integer
+                    # Create a string in the format "minutes:seconds"
+                    nBackDuration = f"{minutes:02}:{remaining_seconds:02}"
+
+                    # Formatting start time
+                    gmt_time = data_row[4]
+
+                    # Replace underscores with spaces for parsing
+                    gmt_time = gmt_time.replace('_', ' ')
+
+                    # Create a datetime object from the modified GMT time string
+                    gmt_datetime = datetime.strptime(gmt_time, "%Y-%m-%d %H:%M:%S")
+
+                    # Define the GMT and Mountain Time (MT) time zones
+                    gmt_timezone = pytz.timezone('GMT')
+                    mountain_timezone = pytz.timezone('US/Mountain')
+
+                    # Localize the GMT datetime to GMT time zone and convert to Mountain Time
+                    mountain_time = gmt_timezone.localize(gmt_datetime).astimezone(mountain_timezone)
+
+                    # Format the Mountain Time datetime as a string
+                    nBackStartTime = mountain_time.strftime("%Y-%m-%d %H:%M:%S")
+
+                    # Getting task order by converting the time strings to datetime objects
+                    taskOrder = ""
+                    n = datetime.strptime(nBackStartTime, '%Y-%m-%d %H:%M:%S')
+                    v = datetime.strptime(symmStart, '%Y-%m-%d %H:%M:%S')
+                    print("N-Back start time", n)
+                    print("Visual span start time", v)
+                    if v > n:
+                        taskOrder = "N, V"
+                    else:
+                        taskOrder = "V, N"
 
                     # Read the CSV file and skip the first 3 rows
                     data = pd.read_csv(fileNames[i], skiprows=3)
@@ -291,6 +331,9 @@ def analyzeNBack():
                             return round(0.5 * math.log(((1 - falseProportion) * (1 - hitProportion)) / ((hitProportion) * falseProportion)), 1)
 
                     # Appending values into output data file
+                    a.insert(6, nBackStartTime)
+                    a.insert(7, nBackDuration)
+                    a.insert(8, taskOrder)
                     a.append(twoBackDemoHitRate)
                     a.append(threeBackDemoHitRate)
 

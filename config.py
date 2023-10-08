@@ -1,5 +1,8 @@
 output_file = "output.csv"
 items = []
+limeStartTime = 0
+symmSpanStartTime = 0
+nBackStartTime = 0
 # Demo vars
 #limeSurveyFile = "test LimeSurvey results.csv"
 #nBackFolder = "N-Back"

@@ -3,12 +3,14 @@ import csv
 import os
 import pandas as pd
 import math
+import pytz
+from datetime import datetime
 
 
 def analyzeSymmSpan():
         for a in config.items:
             # Array which contains data to write
-            token = a[1]
+            token = a[4]
             # symmMeanDemo and symmMean refer to the mean reaction time for demo and test trials
             symmMeanDemo = symmTotalDemo = symmCountDemo = 0
             symmMean = symmTotal = symmCount = 0
@@ -36,6 +38,31 @@ def analyzeSymmSpan():
                     browser_value = data.loc[0, "browser"]
                 else:
                     browser_value = "Not detected"
+
+                """ Checking for the start time by using the unix time in the first trial. Unix times in these log files
+                are in milliseconds so we need to convert them to seconds"""
+                unixStartTime = data.loc[0, "unix_timeStamp"]/1000
+                unixEndTime = data.loc[79, "unix_timeStamp"] / 1000
+                # Define the Mountain Time (MT) timezone
+                mountain_timezone = pytz.timezone('US/Mountain')
+
+                # Convert the Unix timestamp to Mountain Time
+                symmSpanStartTime = datetime.fromtimestamp(unixStartTime, mountain_timezone)
+
+                # Parse the input datetime string
+                input_datetime = datetime.strptime(str(symmSpanStartTime), "%Y-%m-%d %H:%M:%S.%f%z")
+
+                # Format the datetime to the desired output format
+                symmSpanStartTime = input_datetime.strftime("%Y-%m-%d %H:%M:%S")
+                config.symmSpanStartTime = symmSpanStartTime
+
+                # Duration of the experiment in minutes and seconds
+                symmDuration = unixEndTime - unixStartTime
+                minutes = int(symmDuration // 60)  # Whole minutes
+                remaining_seconds = int(symmDuration % 60)  # Remaining seconds as an integer
+                # Create a string in the format "minutes:seconds"
+                symmDuration = f"{minutes:02}:{remaining_seconds:02}"
+
                 symspan_demo_score = 0
                 symmspan_score = 0
                 total_demo_correct = str(int(data["spatial_demo_accuracy"].sum()))
@@ -213,6 +240,12 @@ def analyzeSymmSpan():
                 symmCorrectCount = symmCount - (speedError + processingError)
                 symmCorrectCountPercent = (symmCorrectCount / symmCount) * 100
 
+                # Appending the start time of the symmspan task into our data array
+                a.insert(4, symmSpanStartTime)
+
+                # Appending the duration of the symmspan task into the data array
+                a.insert(5, symmDuration)
+
                 # Adding new variables from symmspan file into our items array which contains all output data
                 a.append(browser_value)
 
@@ -235,6 +268,8 @@ def analyzeSymmSpan():
                 a.append(speedError)
                 a.append(processingError_demo)
                 a.append(processingError)
+                a.append(speedError_demo + processingError_demo)
+                a.append(speedError + processingError)
                 a.append(round(maxDTRtDemo))
                 a.append(round(maxDTRt))
                 a.append(symmCorrectCountDemo)
