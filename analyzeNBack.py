@@ -100,16 +100,19 @@ def analyzeNBack():
                     # Format the Mountain Time datetime as a string
                     nBackStartTime = mountain_time.strftime("%Y-%m-%d %H:%M:%S")
 
-                    # Getting task order by converting the time strings to datetime objects
-                    taskOrder = ""
-                    n = datetime.strptime(nBackStartTime, '%Y-%m-%d %H:%M:%S')
-                    v = datetime.strptime(symmStart, '%Y-%m-%d %H:%M:%S')
-                    print("N-Back start time", n)
-                    print("Visual span start time", v)
-                    if v > n:
-                        taskOrder = "N, V"
+                    if symmStart != " ":
+                        # Getting task order by converting the time strings to datetime objects
+                        taskOrder = ""
+                        n = datetime.strptime(nBackStartTime, '%Y-%m-%d %H:%M:%S')
+                        v = datetime.strptime(symmStart, '%Y-%m-%d %H:%M:%S')
+                        print("N-Back start time", n)
+                        print("Visual span start time", v)
+                        if v > n:
+                            taskOrder = "N, V"
+                        else:
+                            taskOrder = "V, N"
                     else:
-                        taskOrder = "V, N"
+                        taskOrder = "1 task missing"
 
                     # Read the CSV file and skip the first 3 rows
                     data = pd.read_csv(fileNames[i], skiprows=3)

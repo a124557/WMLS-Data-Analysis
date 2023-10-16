@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import math
 import pytz
-from datetime import datetime
+from datetime import datetime, date
 
 
 def analyzeSymmSpan():
@@ -30,6 +30,8 @@ def analyzeSymmSpan():
             processingError = 0
             maxDTRtDemo = 0
             maxDTRt = 0
+            maxSpanDemo = maxSpan = 0
+            perfectSpanPoints_2 = perfectSpanPoints_3 = perfectSpanPoints_4 = perfectSpanPoints_5 = 0
             # We are locating the symm span file with the same token in the current row
             filename = f"{config.visualSpanFolder}/Symmetry_Span_{token}.csv"
             if os.path.isfile(filename):
@@ -73,9 +75,24 @@ def analyzeSymmSpan():
                     if row[data.columns.get_loc("trial_type")] == "spatial-span-recall-demo" and \
                             row[data.columns.get_loc("spatial_demo_accuracy")] == row[data.columns.get_loc("set_size")]:
                         symspan_demo_score += row[data.columns.get_loc("spatial_demo_accuracy")]
+                        # Calculating maximum span size for demo trials below
+                        maxSpanDemo = max(maxSpanDemo, int(row[data.columns.get_loc("set_size")]))
+
                     if row[data.columns.get_loc("trial_type")] == "spatial-span-recall" and \
                             row[data.columns.get_loc("spatial_accuracy")] == row[data.columns.get_loc("set_size")]:
                         symmspan_score += row[data.columns.get_loc("spatial_accuracy")]
+                        # Calculating maximum span size for test trials below
+                        maxSpan = max(maxSpan, int(row[data.columns.get_loc("set_size")]))
+
+                        # Calculating perfect span points
+                        if row[data.columns.get_loc("set_size")] == 2:
+                            perfectSpanPoints_2 += 2
+                        elif row[data.columns.get_loc("set_size")] == 3:
+                            perfectSpanPoints_3 += 3
+                        elif row[data.columns.get_loc("set_size")] == 4:
+                            perfectSpanPoints_4 += 4
+                        elif row[data.columns.get_loc("set_size")] == 5:
+                            perfectSpanPoints_5 += 5
                     # RT mean on demo distractor tasks
                     try:
                         if row[data.columns.get_loc("symm_demo_accuracy")] in [0, 1] or row[
@@ -280,6 +297,12 @@ def analyzeSymmSpan():
                 # Blocks
                 a.append(round(symspan_demo_score))
                 a.append(round(symmspan_score))
+                a.append(maxSpanDemo)
+                a.append(maxSpan)
+                a.append(perfectSpanPoints_2)
+                a.append(perfectSpanPoints_3)
+                a.append(perfectSpanPoints_4)
+                a.append(perfectSpanPoints_5)
                 a.append(total_demo_correct)
                 a.append(total_correct)
                 a.append(round(partialCreditDemo, 2))
@@ -290,7 +313,23 @@ def analyzeSymmSpan():
             else:
                 """Fill array indexes that would normally contain symm-span data with None. Ensures that n-back
                 data is not placed under symm-span headers"""
-                empty_items = 27
+                """empty_items = 27
                 for _ in range(empty_items):
                     a.append(None)
-                print("File not found ", token)
+                print("File not found ", token)"""
+                # Appending the start time of the symmspan task into our data array
+                a.insert(4, " ")
+
+                # Appending the duration of the symmspan task into the data array
+                a.insert(5, " ")
+
+                # Adding new variables from symmspan file into our items array which contains all output data
+                a.append(" ")
+
+                # The below number is the total number of variables above pertaining to the visual-span task
+                empty_items = 34
+                for _ in range(empty_items):
+                    a.append(" ")
+
+
+
